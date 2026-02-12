@@ -1,0 +1,52 @@
+---
+name: multi-platform testing
+
+on:
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  ubuntu-job:
+    name: Ubuntu job
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    - name: OS info (Linux)
+      run: |
+        echo "Runner OS: $RUNNER_OS"
+        uname -a
+    - name: Create + show file
+      run: |
+        echo "Hello from Ubuntu runner" > os-output.txt
+        cat os-output.txt
+
+  windows-job:
+    name: Windows job
+    runs-on: windows-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    - name: OS info (Windows)
+      run: |
+        echo "Runner OS: $env:RUNNER_OS"
+        systeminfo | Select-String "^OS Name","^OS Version"
+    - name: Create + show file
+      run: |
+        "Hello from Windows runner" | Out-File -Encoding utf8 os-output.txt
+        Get-Content os-output.txt
+
+  macos-job:
+    name: macOS job
+    runs-on: macos-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    - name: OS info (macOS)
+      run: |
+        echo "Runner OS: $RUNNER_OS"
+        uname -a
+    - name: Create + show file
+      run: |
+        echo "Hello from macOS runner" > os-output.txt
+        cat os-output.txt
